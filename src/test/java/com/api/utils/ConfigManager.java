@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.Properties;
 
+// To design this class we have used Singleton pattern
 public class ConfigManager {
 
 //Write a Program to read the Properties file from src/test/resources/config/config.properties
@@ -20,12 +21,17 @@ public class ConfigManager {
 		// creaed outside the class.
 	}
 
+	//static block executed only once so that program can be memory efficient 
 	static {
 
 		// if we forget to pass env value in cmd/git by default it will take 'qa' env
 		env = System.getProperty("env", "qa");
 
 		env = env.toLowerCase().trim();
+	
+		// Using Java 14+ enhanced switch statement (arrow syntax '->') to reduce boilerplate code.
+		// This eliminates the need for break statements, prevents fall-through,
+		// and improves readability and maintainability.
 		switch (env) {
 		case "dev" -> path = "config/config.dev.properties";
 
