@@ -44,7 +44,7 @@ jobs:
       uses: actions/upload-artifact@v6.0.0
       with:
         name: SureFire Report
-        path: targrt/surefire-reports/
+        path: target/surefire-reports/
         retention-days: 10
         
       
