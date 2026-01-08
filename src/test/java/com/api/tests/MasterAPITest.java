@@ -40,7 +40,7 @@ public class MasterAPITest {
 		.body("data.mst_model.size()", greaterThan(2))
 		.body("data.mst_oem.id", everyItem(notNullValue()))
 		.body("data.mst_oem.name", everyItem(notNullValue()))
-		.body(JsonSchemaValidator.matchesJsonSchemaInClasspath("response-schema\\MasterAPIResponseSchema.json"));
+		.body(JsonSchemaValidator.matchesJsonSchemaInClasspath("response-schema/MasterAPIResponseSchema.json"));
 	}
 	
 	@Test
