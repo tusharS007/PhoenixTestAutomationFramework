@@ -43,6 +43,7 @@ public class MasterAPITest {
 		.body(JsonSchemaValidator.matchesJsonSchemaInClasspath("response-schema/MasterAPIResponseSchema.json"));
 	}
 	
+	//Negative test
 	@Test
 	public void invalidTokenMasterAPITest() {
 		
