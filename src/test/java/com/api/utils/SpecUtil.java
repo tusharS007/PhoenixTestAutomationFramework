@@ -48,6 +48,37 @@ public class SpecUtil {
 		return requestSpecification;
 	}
 	
+	public static RequestSpecification requestSpecificationWithAuth(Role role) {
+		RequestSpecification requestSpecification = new RequestSpecBuilder()
+				.setBaseUri(getProperty("Base_URI"))
+				.setContentType(ContentType.JSON)
+				.setAccept(ContentType.JSON)
+				.addHeader("Authorization", AuthTokenProvider.getToken(role))
+				.log(LogDetail.URI)
+				.log(LogDetail.METHOD)
+				.log(LogDetail.HEADERS)
+				.log(LogDetail.BODY)
+				.build();
+				
+		return requestSpecification;
+	}
+	
+	public static RequestSpecification requestSpecificationWithAuth(Role role, Object payLoad) {
+		// Example of Mehod overloading here to pass body we have added the parameter in method keeping the name is same
+		RequestSpecification requestSpecification = new RequestSpecBuilder()
+		.setBaseUri(getProperty("Base_URI"))
+		.setContentType(ContentType.JSON)
+		.setAccept(ContentType.JSON)
+		.addHeader("Authorization", AuthTokenProvider.getToken(role))
+		.setBody(payLoad)
+		.log(LogDetail.URI)
+		.log(LogDetail.METHOD)
+		.log(LogDetail.HEADERS)
+		.log(LogDetail.BODY)
+		.build();
+		
+		return requestSpecification;
+	}
 	
 	public static ResponseSpecification responseSpec_OK() {
 		
@@ -84,18 +115,5 @@ public class SpecUtil {
 		  return responseSpecification;
 		}
 	
-	public static RequestSpecification requestSpecificationWithAuth(Role role) {
-		RequestSpecification requestSpecification = new RequestSpecBuilder()
-				.setBaseUri(getProperty("Base_URI"))
-				.setContentType(ContentType.JSON)
-				.setAccept(ContentType.JSON)
-				.addHeader("Authorization", AuthTokenProvider.getToken(role))
-				.log(LogDetail.URI)
-				.log(LogDetail.METHOD)
-				.log(LogDetail.HEADERS)
-				.log(LogDetail.BODY)
-				.build();
-				
-		return requestSpecification;
-	}
+
 }
