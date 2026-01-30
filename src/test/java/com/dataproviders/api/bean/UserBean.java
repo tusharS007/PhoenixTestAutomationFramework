@@ -1,8 +1,11 @@
 package com.dataproviders.api.bean;
 
-public class UserBean {
+import com.opencsv.bean.CsvBindByName;
 
+public class UserBean {
+    @CsvBindByName(column="username")
 	private String username;
+    @CsvBindByName(column="password")
 	private String password;
 	
 	public UserBean(){
