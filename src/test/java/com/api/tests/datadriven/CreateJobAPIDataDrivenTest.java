@@ -14,7 +14,7 @@ import com.api.request.model.CreateJobPayload;
 public class CreateJobAPIDataDrivenTest {
 
 		
-	@Test(description = "Verify if create job API is able to create Inwarranty job", groups= {"api","smoke","datadriven"},
+	@Test(description = "Verify if create job API is able to create Inwarranty job", groups= {"api","smoke","datadriven","csv"},
 			dataProviderClass = com.dataproviders.DataProviderUtils.class,
 			dataProvider = "CreateJobAPIDataProvider")
 	public void createJobAPITest(CreateJobPayload createJobPayload) {
