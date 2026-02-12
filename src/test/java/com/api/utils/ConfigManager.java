@@ -21,15 +21,16 @@ public class ConfigManager {
 		// creaed outside the class.
 	}
 
-	//static block executed only once so that program can be memory efficient 
+	// static block executed only once so that program can be memory efficient
 	static {
 
 		// if we forget to pass env value in cmd/git by default it will take 'qa' env
 		env = System.getProperty("env", "qa");
-
+		System.out.println("Running the test in Env - " + env);
 		env = env.toLowerCase().trim();
-	
-		// Using Java 14+ enhanced switch statement (arrow syntax '->') to reduce boilerplate code.
+
+		// Using Java 14+ enhanced switch statement (arrow syntax '->') to reduce
+		// boilerplate code.
 		// This eliminates the need for break statements, prevents fall-through,
 		// and improves readability and maintainability.
 		switch (env) {
@@ -64,7 +65,7 @@ public class ConfigManager {
 
 	public static String getProperty(String key) {
 
-		return prop.getProperty("BASE_URI");
+		return prop.getProperty(key);
 	}
 
 }
