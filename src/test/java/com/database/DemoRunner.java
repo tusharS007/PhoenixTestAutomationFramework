@@ -5,13 +5,13 @@ import java.sql.SQLException;
 public class DemoRunner {
 
 	public static void main(String[] args) throws SQLException {
-		DatabaseManager.createConnection();
+		DatabaseManagerOld.createConnection();
 		long startTime = System.currentTimeMillis();
 		for (int i = 0; i <= 10000; i++) {
-			DatabaseManager.createConnection();
-			DatabaseManager.createConnection();
-			DatabaseManager.createConnection();
-			DatabaseManager.createConnection();
+			DatabaseManagerOld.createConnection();
+			DatabaseManagerOld.createConnection();
+			DatabaseManagerOld.createConnection();
+			DatabaseManagerOld.createConnection();
 		}
 
 		long endTime = System.currentTimeMillis();
