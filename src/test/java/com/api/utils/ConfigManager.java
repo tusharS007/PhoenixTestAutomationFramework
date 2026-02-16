@@ -61,11 +61,12 @@ public class ConfigManager {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+
 	}
 
 	public static String getProperty(String key) {
 
-		return prop.getProperty(key);
+		return prop.getProperty(key.trim());
 	}
 
 }

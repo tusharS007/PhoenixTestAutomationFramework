@@ -66,7 +66,7 @@ public class SpecUtil {
 	public static RequestSpecification requestSpecificationWithAuth(Role role, Object payLoad) {
 		// Example of Mehod overloading here to pass body we have added the parameter in method keeping the name is same
 		RequestSpecification requestSpecification = new RequestSpecBuilder()
-		.setBaseUri(getProperty("Base_URI"))
+		.setBaseUri(getProperty("BASE_URI"))
 		.setContentType(ContentType.JSON)
 		.setAccept(ContentType.JSON)
 		.addHeader("Authorization", AuthTokenProvider.getToken(role))
