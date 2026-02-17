@@ -19,7 +19,7 @@ public class SpecUtil {
 	public static RequestSpecification requestSpec() {
 		// To take care of the common request sections (method) in test class
 		RequestSpecification requestSpecification = new RequestSpecBuilder()
-		.setBaseUri(getProperty("Base_URI"))
+		.setBaseUri(getProperty("BASE_URI"))
 		.setContentType(ContentType.JSON)
 		.setAccept(ContentType.JSON)
 		.log(LogDetail.URI)
@@ -35,7 +35,7 @@ public class SpecUtil {
 	public static RequestSpecification requestSpec(Object payLoad) {
 		// Example of Mehod overloading here to pass body we have added the parameter in method keeping the name is same
 		RequestSpecification requestSpecification = new RequestSpecBuilder()
-		.setBaseUri(getProperty("Base_URI"))
+		.setBaseUri(getProperty("BASE_URI"))
 		.setContentType(ContentType.JSON)
 		.setAccept(ContentType.JSON)
 		.setBody(payLoad)
@@ -50,7 +50,7 @@ public class SpecUtil {
 	
 	public static RequestSpecification requestSpecificationWithAuth(Role role) {
 		RequestSpecification requestSpecification = new RequestSpecBuilder()
-				.setBaseUri(getProperty("Base_URI"))
+				.setBaseUri(getProperty("BASE_URI"))
 				.setContentType(ContentType.JSON)
 				.setAccept(ContentType.JSON)
 				.addHeader("Authorization", AuthTokenProvider.getToken(role))
