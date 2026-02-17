@@ -1,9 +1,9 @@
 package com.database.dao;
 
 import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
 
 import com.database.DatabaseManager;
 import com.database.model.CustomerDBModel;
@@ -11,21 +11,34 @@ import com.database.model.CustomerDBModel;
 public class CustomerDao {
 
 	private static final String CUSTOMER_DETAIL_QUERY = """
-			Select * from tr_customer where id = 189269
+			Select * from tr_customer where id = ?
 						""";
 
-	public static CustomerDBModel getCustomerInfo() throws SQLException {
-		Connection conn = DatabaseManager.getConnection();
-		Statement statement = conn.createStatement();
-		ResultSet resultSet = statement.executeQuery(CUSTOMER_DETAIL_QUERY);
+	private CustomerDao() {
+		
+	}
+	
+	public static CustomerDBModel getCustomerInfo(int customerId) {
 		CustomerDBModel customerDBModel = null;
-		while (resultSet.next()) {
-			System.out.println(resultSet.getString("first_name"));
-			System.out.println(resultSet.getString("email_id"));
+		try {
+			Connection conn = DatabaseManager.getConnection();
+			PreparedStatement prepareStatement = conn.prepareStatement(CUSTOMER_DETAIL_QUERY);
+			prepareStatement.setInt(1, customerId); // ? placedholder we are parameterizing the sql query
+			ResultSet resultSet = prepareStatement.executeQuery();
 
-			customerDBModel = new CustomerDBModel(resultSet.getString("first_name"), resultSet.getString("last_name"),
-					resultSet.getString("mobile_number"), resultSet.getString("mobile_number_alt"),
-					resultSet.getString("email_id"), resultSet.getString("email_id_alt"));
+			while (resultSet.next()) {
+				System.out.println(resultSet.getString("first_name"));
+				System.out.println(resultSet.getString("email_id"));
+
+				customerDBModel = new CustomerDBModel(
+						resultSet.getInt("id"),
+						resultSet.getString("first_name"),
+						resultSet.getString("last_name"), resultSet.getString("mobile_number"),
+						resultSet.getString("mobile_number_alt"), resultSet.getString("email_id"),
+						resultSet.getString("email_id_alt"), resultSet.getInt("tr_customer_address_id"));
+			}
+		} catch (SQLException e) {
+			System.err.println(e.getMessage());
 		}
 		return customerDBModel;
 	}
