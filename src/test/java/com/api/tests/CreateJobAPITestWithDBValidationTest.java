@@ -30,9 +30,11 @@ import com.api.utils.DateTimeUtil;
 import com.database.dao.CustomerAddressDao;
 import com.database.dao.CustomerDao;
 import com.database.dao.CustomerProductDao;
+import com.database.dao.MapJobProblemDao;
 import com.database.model.CustomerAddressDBModel;
 import com.database.model.CustomerDBModel;
 import com.database.model.CustomerProductDBModel;
+import com.database.model.MapJobProblemModel;
 
 import io.restassured.response.Response;
 
@@ -42,12 +44,13 @@ public class CreateJobAPITestWithDBValidationTest {
 	private Customer customer;
 	private CustomerAddress customerAddress;
 	private CustomerProduct customerProduct;
+	Problems problems;
 	@BeforeMethod(description = "Creating createjob API request payload")
 	public void setup() {
 		customer = new Customer("tushar", "shelar", "9321075789", "", "tds@gmail.com", "");
 		customerAddress = new CustomerAddress("A 201", "Alliance", "Karve Nager", "Phoenix", "Pune", "401101", "India", "Maharashtra");
-		customerProduct = new CustomerProduct(DateTimeUtil.getTimeWithDaysAgo(10), "75288284085858", "75288284085858", "75288284085858", DateTimeUtil.getTimeWithDaysAgo(10), Product.NEXUS_2.getCode(), Model.NEXUS_2_BLUE.getCode());
-		Problems problems = new Problems(Problem.OVERHEATONG.getCode(), "Display Issue");
+		customerProduct = new CustomerProduct(DateTimeUtil.getTimeWithDaysAgo(10), "75118284085858", "75118284085858", "75118284085858", DateTimeUtil.getTimeWithDaysAgo(10), Product.NEXUS_2.getCode(), Model.NEXUS_2_BLUE.getCode());
+		problems = new Problems(Problem.OVERHEATONG.getCode(), "Display Issue");
 		
 		List<Problems> problemsList = new ArrayList<Problems>();
 		problemsList.add(problems);
@@ -72,8 +75,7 @@ public class CreateJobAPITestWithDBValidationTest {
 		int customerId=response.then().extract().body().jsonPath().getInt("data.tr_customer_id");
 		
 		CustomerDBModel customerDataFromDB = CustomerDao.getCustomerInfo(customerId);
-		System.out.println(customerDataFromDB);
-		
+				
 		Assert.assertEquals(customer.first_name(), customerDataFromDB.first_name());
 		Assert.assertEquals(customer.last_name(), customerDataFromDB.last_name());
 		Assert.assertEquals(customer.mobile_number(), customerDataFromDB.mobile_number());
@@ -93,7 +95,6 @@ public class CreateJobAPITestWithDBValidationTest {
 	  
 		int productId=response.then().extract().body().jsonPath().getInt("data.tr_customer_product_id");
 		
-		
 		CustomerProductDBModel customerProductFromDB = CustomerProductDao.getProductInfoFromDB(productId);
 		Assert.assertEquals(customerProductFromDB.mst_model_id(), customerProduct.mst_model_id());
 		Assert.assertEquals(customerProductFromDB.dop(), customerProduct.dop());
@@ -102,5 +103,10 @@ public class CreateJobAPITestWithDBValidationTest {
 		Assert.assertEquals(customerProductFromDB.imei1(), customerProduct.imei1());
 		Assert.assertEquals(customerProductFromDB.serial_number(), customerProduct.serial_number());
 		
+		int tr_job_head_id = response.body().jsonPath().getInt("data.id");
+		MapJobProblemModel jobDataFromDB = MapJobProblemDao.getProblemDetails(tr_job_head_id);
+		Assert.assertEquals(jobDataFromDB.id(), createJobPayload.problems().get(0).id() );
+		Assert.assertEquals(jobDataFromDB.remark(), createJobPayload.problems().get(0).remark());
+	
 	}
 }

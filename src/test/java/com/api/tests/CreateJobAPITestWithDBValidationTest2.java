@@ -31,9 +31,11 @@ import com.api.utils.DateTimeUtil;
 import com.database.dao.CustomerAddressDao;
 import com.database.dao.CustomerDao;
 import com.database.dao.CustomerProductDao;
+import com.database.dao.MapJobProblemDao;
 import com.database.model.CustomerAddressDBModel;
 import com.database.model.CustomerDBModel;
 import com.database.model.CustomerProductDBModel;
+import com.database.model.MapJobProblemModel;
 
 public class CreateJobAPITestWithDBValidationTest2 {
 
@@ -45,7 +47,7 @@ public class CreateJobAPITestWithDBValidationTest2 {
 	public void setup() {
 		customer = new Customer("tushar", "shelar", "9321075789", "", "tds@gmail.com", "");
 		customerAddress = new CustomerAddress("A 201", "Alliance", "Karve Nager", "Phoenix", "Pune", "401101", "India", "Maharashtra");
-		customerProduct = new CustomerProduct(DateTimeUtil.getTimeWithDaysAgo(10), "01288223085858", "01288223085858", "01288223085858", DateTimeUtil.getTimeWithDaysAgo(10), Product.NEXUS_2.getCode(), Model.NEXUS_2_BLUE.getCode());
+		customerProduct = new CustomerProduct(DateTimeUtil.getTimeWithDaysAgo(10), "20288223085858", "20288223085858", "20288223085858", DateTimeUtil.getTimeWithDaysAgo(10), Product.NEXUS_2.getCode(), Model.NEXUS_2_BLUE.getCode());
 		Problems problems = new Problems(Problem.OVERHEATONG.getCode(), "Display Issue");
 		
 		List<Problems> problemsList = new ArrayList<Problems>();
@@ -58,7 +60,10 @@ public class CreateJobAPITestWithDBValidationTest2 {
 	public void createJobAPITest() {
 
 		CreateJobResponseModel createJobDataModel = given()
-				.spec(requestSpecificationWithAuth(Role.FD, createJobPayload)).when().post("/job/create").then()
+				.spec(requestSpecificationWithAuth(Role.FD, createJobPayload))
+				.when()
+				.post("/job/create")
+				.then()
 				.spec(responseSpec_OK())
 				.body(matchesJsonSchemaInClasspath("response-schema\\CreateJobAPIResponseSchema.json"))
 				.body("message", Matchers.equalTo("Job created successfully. "))
@@ -66,7 +71,7 @@ public class CreateJobAPITestWithDBValidationTest2 {
 				.body("data.job_number", Matchers.startsWith("JOB_"))
 				.extract().as(CreateJobResponseModel.class);
 
-		System.out.println(createJobDataModel);
+		
 		int customerId = createJobDataModel.data().tr_customer_id();
 
 		CustomerDBModel customerDataFromDB = CustomerDao.getCustomerInfo(customerId);
@@ -94,11 +99,16 @@ public class CreateJobAPITestWithDBValidationTest2 {
 
 		CustomerProductDBModel customerProductFromDB = CustomerProductDao.getProductInfoFromDB(productId);
 		Assert.assertEquals(customerProductFromDB.mst_model_id(), customerProduct.mst_model_id());
-		Assert.assertEquals(customerProductFromDB.dop(), customerProduct.dop()); // this test will fail due to db dont contain timestamp. expected [2026-02-08T11:29:03.737580100Z] but found [2026-02-08]
+		Assert.assertEquals(customerProductFromDB.dop(), customerProduct.dop()); // This test will fail due to db dont contain timestamp. expected [2026-02-08T11:29:03.737580100Z] but found [2026-02-08]
 		Assert.assertEquals(customerProductFromDB.popurl(), customerProduct.popurl());
 		Assert.assertEquals(customerProductFromDB.imei2(), customerProduct.imei2());
 		Assert.assertEquals(customerProductFromDB.imei1(), customerProduct.imei1());
 		Assert.assertEquals(customerProductFromDB.serial_number(), customerProduct.serial_number());
+		
+		int tr_job_head_id = createJobDataModel.data().id();
+		MapJobProblemModel jobDataFromDB = MapJobProblemDao.getProblemDetails(tr_job_head_id);
+		Assert.assertEquals(jobDataFromDB.id(), createJobPayload.problems().get(0).id() );
+		Assert.assertEquals(jobDataFromDB.remark(), createJobPayload.problems().get(0).remark());
 
 	}
 }
