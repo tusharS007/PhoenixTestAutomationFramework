@@ -37,7 +37,7 @@ import com.database.model.CustomerDBModel;
 import com.database.model.CustomerProductDBModel;
 import com.database.model.MapJobProblemModel;
 
-public class CreateJobAPITestWithDBValidationTest2 {
+public class CreateJobAPITestWithDBValidationWithResponseModelTest {
 
 	private CreateJobPayload createJobPayload;
 	private Customer customer;
