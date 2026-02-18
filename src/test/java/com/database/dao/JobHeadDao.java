@@ -28,7 +28,7 @@ public class JobHeadDao {
 		 
 		 while(rs.next()) {
 				jobHeadModel = new JobHeadModel(rs.getInt("id"), rs.getString("job_number"),
-						rs.getInt("itr_customer_id"), rs.getInt("tr_customer_product_id"),
+						rs.getInt("tr_customer_id"), rs.getInt("tr_customer_product_id"),
 						rs.getInt("mst_service_location_id"), rs.getInt("mst_platform_id"),
 						rs.getInt("mst_warrenty_status_id"), rs.getInt("mst_oem_id"));
 			}
