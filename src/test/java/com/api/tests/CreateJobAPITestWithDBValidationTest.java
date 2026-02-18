@@ -30,10 +30,12 @@ import com.api.utils.DateTimeUtil;
 import com.database.dao.CustomerAddressDao;
 import com.database.dao.CustomerDao;
 import com.database.dao.CustomerProductDao;
+import com.database.dao.JobHeadDao;
 import com.database.dao.MapJobProblemDao;
 import com.database.model.CustomerAddressDBModel;
 import com.database.model.CustomerDBModel;
 import com.database.model.CustomerProductDBModel;
+import com.database.model.JobHeadModel;
 import com.database.model.MapJobProblemModel;
 
 import io.restassured.response.Response;
@@ -49,12 +51,14 @@ public class CreateJobAPITestWithDBValidationTest {
 	public void setup() {
 		customer = new Customer("tushar", "shelar", "9321075789", "", "tds@gmail.com", "");
 		customerAddress = new CustomerAddress("A 201", "Alliance", "Karve Nager", "Phoenix", "Pune", "401101", "India", "Maharashtra");
-		customerProduct = new CustomerProduct(DateTimeUtil.getTimeWithDaysAgo(10), "75118284085858", "75118284085858", "75118284085858", DateTimeUtil.getTimeWithDaysAgo(10), Product.NEXUS_2.getCode(), Model.NEXUS_2_BLUE.getCode());
+		customerProduct = new CustomerProduct(DateTimeUtil.getTimeWithDaysAgo(10), "85118284085858", "85118284085858", "85118284085858", DateTimeUtil.getTimeWithDaysAgo(10), Product.NEXUS_2.getCode(), Model.NEXUS_2_BLUE.getCode());
 		problems = new Problems(Problem.OVERHEATONG.getCode(), "Display Issue");
 		
 		List<Problems> problemsList = new ArrayList<Problems>();
 		problemsList.add(problems);
-		createJobPayload = new CreateJobPayload(ServiceLocation.SERVICE_LOCATION_A.getCode(), Platform.FRONT_DESK.getCode(), Warranty_Status.IN_WARRANTY.getCode(), OEM.GOOGLE.getCode(), customer, customerAddress, customerProduct, problemsList);
+		createJobPayload = new CreateJobPayload(ServiceLocation.SERVICE_LOCATION_A.getCode(),
+				Platform.FRONT_DESK.getCode(), Warranty_Status.IN_WARRANTY.getCode(), OEM.GOOGLE.getCode(), customer,
+				customerAddress, customerProduct, problemsList);
 	}
 	
 	@Test(description = "Verify if create job API is able to create Inwarranty job", groups= {"api","smoke","regression"})
@@ -108,5 +112,10 @@ public class CreateJobAPITestWithDBValidationTest {
 		Assert.assertEquals(jobDataFromDB.id(), createJobPayload.problems().get(0).id() );
 		Assert.assertEquals(jobDataFromDB.remark(), createJobPayload.problems().get(0).remark());
 	
+		JobHeadModel jobHeadDataFromDB= JobHeadDao.getDataFromJobHead(customerId);
+		Assert.assertEquals(jobHeadDataFromDB.mst_oem_id(), createJobPayload.mst_oem_id());
+		Assert.assertEquals(jobHeadDataFromDB.mst_service_location_id(), createJobPayload.mst_service_location_id());
+		Assert.assertEquals(jobHeadDataFromDB.mst_warrenty_status_id(), createJobPayload.mst_warrenty_status_id());
+		Assert.assertEquals(jobHeadDataFromDB.mst_platform_id(), createJobPayload.mst_platform_id());
 	}
 }

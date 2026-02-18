@@ -16,13 +16,15 @@ import com.api.request.model.Customer;
 import com.api.utils.FakerDataFGenerator;
 import com.database.dao.CustomerAddressDao;
 import com.database.dao.CustomerDao;
+import com.database.dao.JobHeadDao;
 import com.database.model.CustomerAddressDBModel;
 import com.database.model.CustomerDBModel;
+import com.database.model.JobHeadModel;
 
 public class CreateJobAPITestWithFakeData {
 
 	private CreateJobPayload createJobPayload;
-	private final static int count =5;
+	private final static int count =1;
 	@BeforeMethod(description = "Creating createjob API request payload")
 	public void setup() {
 	    createJobPayload = FakerDataFGenerator.generateFakeCreateJobData();
@@ -64,5 +66,12 @@ public class CreateJobAPITestWithFakeData {
 		Assert.assertEquals(customerAddressFromDB.country(), createJobPayload.customer_address().country());
 		Assert.assertEquals(customerAddressFromDB.pincode(), createJobPayload.customer_address().pincode());
 	
+		JobHeadModel jobHeadDataFromDB= JobHeadDao.getDataFromJobHead(customerId);
+		Assert.assertEquals(jobHeadDataFromDB.mst_oem_id(), createJobPayload.mst_oem_id());
+		Assert.assertEquals(jobHeadDataFromDB.mst_service_location_id(), createJobPayload.mst_service_location_id());
+		Assert.assertEquals(jobHeadDataFromDB.mst_warrenty_status_id(), createJobPayload.mst_warrenty_status_id());
+		Assert.assertEquals(jobHeadDataFromDB.mst_platform_id(), createJobPayload.mst_platform_id());
+	
+		
 	}
 }
