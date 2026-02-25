@@ -5,14 +5,12 @@ import java.sql.SQLException;
 
 import com.api.utils.ConfigManager;
 import com.api.utils.EnvUtil;
+import com.api.utils.VaultDBConfig;
 import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
 
 public class DatabaseManager {
 
-	private static final String DB_URL = EnvUtil.getValue("DB_URL");
-	private static final String DB_USERNAME = EnvUtil.getValue("DB_USERNAME");
-	private static final String DB_PASSWORD = EnvUtil.getValue("DB_PASSWORD");
 	private static final int MAXIMUM_POOL_SIZE = Integer.parseInt(ConfigManager.getProperty("MAXIMUM_POOL_SIZE"));
 	private static final int MINIMUM_IDLE_COUNT = Integer.parseInt(ConfigManager.getProperty("MINIMUM_IDLE_COUNT"));
 	private static final int CONNECTION_TIMEOUT_IN_SECS = Integer
@@ -23,8 +21,33 @@ public class DatabaseManager {
 
 	private static HikariConfig hikariConfig;
 	private volatile static HikariDataSource hikariDataSource;
-
 	private volatile static Connection conn;
+
+	private static boolean isVaultUp = true;
+	private static final String DB_URL = loadSecret("DB_URL");
+	private static final String DB_USERNAME = loadSecret("DB_USERNAME");
+	private static final String DB_PASSWORD = loadSecret("DB_PASSWORD");
+
+	public static String loadSecret(String key) {
+
+		String value = null;
+		if (isVaultUp) {
+			// value will get its value from either Vault or Env
+			value = VaultDBConfig.getSecret(key);
+
+			if (value == null) {
+				System.err.println("Vault is down!! or some issue with vault");
+				isVaultUp = false;
+			} else {
+				System.out.println("Reading Value From Vault...");
+				return value;
+			}
+		}
+		// We need to pick up data from Env!!
+		System.out.println("Reading Value From Env....");
+		value = EnvUtil.getValue(key);
+		return value;
+	}
 
 	// volatile - Any update that happens to it all thread will aware about it.
 	private DatabaseManager() {
