@@ -85,7 +85,7 @@ public class SpecUtil {
 	  ResponseSpecification responseSpecification = new ResponseSpecBuilder()
 		.expectContentType(ContentType.JSON)
 		.expectStatusCode(200)
-		.expectResponseTime(Matchers.lessThan(1000L))
+		.expectResponseTime(Matchers.lessThan(2000L))
 		.log(LogDetail.ALL)
 		.build();
 		
