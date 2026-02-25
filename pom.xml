@@ -116,5 +116,13 @@
 			<version>3.2.0</version>
 		</dependency>
 
+		<!-- Source:
+		https://mvnrepository.com/artifact/io.github.jopenlibs/vault-java-driver -->
+		<dependency>
+			<groupId>com.bettercloud</groupId>
+			<artifactId>vault-java-driver</artifactId>
+			<version>5.1.0</version>
+		</dependency>
+
 	</dependencies>
 </project>
