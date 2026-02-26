@@ -1,18 +1,25 @@
 package com.api.tests.datadriven;
 
-import static com.api.utils.SpecUtil.requestSpec;
 import static com.api.utils.SpecUtil.responseSpec_OK;
-import static io.restassured.RestAssured.given;
 import static io.restassured.module.jsv.JsonSchemaValidator.matchesJsonSchemaInClasspath;
 import static org.hamcrest.Matchers.equalTo;
 
 import java.io.IOException;
 
+import org.testng.annotations.BeforeTest;
 import org.testng.annotations.Test;
 
 import com.api.request.model.UserCredetials;
+import com.api.services.AuthService;
 
 public class LoginAPIJsonDataDrivenTest {
+	
+	private AuthService authService;
+	
+	@BeforeTest(description ="Initializing the Auth Service")
+	public void setup() {
+		authService = new AuthService();
+	}
 	
 	@Test(description = "Verify if login API is working for FD user",
 			groups= {"api","regression","smoke"},
@@ -21,10 +28,7 @@ public class LoginAPIJsonDataDrivenTest {
 			)
 	public void loginAPITest(UserCredetials userCredentials) throws IOException {
 		
-		given()
-		.spec(requestSpec(userCredentials))
-		.when()
-		.post("login")
+		authService.login(userCredentials)
 		.then()
 		.spec(responseSpec_OK())
 		.and()
