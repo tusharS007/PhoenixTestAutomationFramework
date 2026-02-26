@@ -1,8 +1,6 @@
 	package com.api.tests;
 
-import static com.api.utils.SpecUtil.requestSpecificationWithAuth;
 import static com.api.utils.SpecUtil.responseSpec_OK;
-import static io.restassured.RestAssured.given;
 import static io.restassured.module.jsv.JsonSchemaValidator.matchesJsonSchemaInClasspath;
 
 import org.hamcrest.Matchers;
@@ -13,6 +11,7 @@ import org.testng.annotations.Test;
 import com.api.constant.Role;
 import com.api.request.model.CreateJobPayload;
 import com.api.request.model.Customer;
+import com.api.services.JobService;
 import com.api.utils.FakerDataFGenerator;
 import com.database.dao.CustomerAddressDao;
 import com.database.dao.CustomerDao;
@@ -25,18 +24,17 @@ public class CreateJobAPITestWithFakeData {
 
 	private CreateJobPayload createJobPayload;
 	private final static int count =1;
+	private JobService jobService;
 	@BeforeMethod(description = "Creating createjob API request payload")
 	public void setup() {
 	    createJobPayload = FakerDataFGenerator.generateFakeCreateJobData();
+	    jobService = new JobService();
 	}
 	
 	@Test(description = "Verify if create job API is able to create Inwarranty job", groups= {"api","smoke","regression"},invocationCount = count)
 	public void createJobAPITest() {
 						
-		int customerId = given()
-		.spec(requestSpecificationWithAuth(Role.FD, createJobPayload))
-		.when()
-		.post("/job/create")
+		int customerId = jobService.create(Role.FD, createJobPayload)
 		.then()
 		.spec(responseSpec_OK())
 		.body(matchesJsonSchemaInClasspath("response-schema\\CreateJobAPIResponseSchema.json"))

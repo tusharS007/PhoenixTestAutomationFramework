@@ -1,6 +1,7 @@
 package com.api.tests;
 
-import static io.restassured.RestAssured.given;
+import static com.api.utils.SpecUtil.responseSpec_OK;
+import static io.restassured.module.jsv.JsonSchemaValidator.matchesJsonSchemaInClasspath;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -22,16 +23,18 @@ import com.api.request.model.Customer;
 import com.api.request.model.CustomerAddress;
 import com.api.request.model.CustomerProduct;
 import com.api.request.model.Problems;
+import com.api.services.JobService;
 import com.api.utils.DateTimeUtil;
-import static com.api.utils.SpecUtil.*;
-
-import static io.restassured.module.jsv.JsonSchemaValidator.*;
 
 public class CreateJobAPITest {
 
 	private CreateJobPayload createJobPayload;
+	private JobService jobService;
+	
 	@BeforeMethod(description = "Creating createjob API request payload")
 	public void setup() {
+		
+		jobService = new JobService();
 		Customer customer = new Customer("tushar", "shelar", "9321075789", "", "tds@gmail.com", "");
 		CustomerAddress customerAddress = new CustomerAddress("A 201", "Alliance", "Karve Nager", "Phoenix", "Pune", "401101", "India", "Maharashtra");
 		CustomerProduct customerProduct = new CustomerProduct(DateTimeUtil.getTimeWithDaysAgo(10), "87988284085858", "87988284085858", "87988284085858", DateTimeUtil.getTimeWithDaysAgo(10), Product.NEXUS_2.getCode(), Model.NEXUS_2_BLUE.getCode());
@@ -45,16 +48,12 @@ public class CreateJobAPITest {
 	@Test(description = "Verify if create job API is able to create Inwarranty job", groups= {"api","smoke","regression"})
 	public void createJobAPITest() {
 						
-		given()
-		.spec(requestSpecificationWithAuth(Role.FD, createJobPayload))
-		.when()
-		.post("/job/create")
+		jobService.create(Role.FD, createJobPayload)
 		.then()
 		.spec(responseSpec_OK())
 		.body(matchesJsonSchemaInClasspath("response-schema\\CreateJobAPIResponseSchema.json"))
 		.body("message", Matchers.equalTo("Job created successfully. "))
 		.body("data.mst_service_location_id", Matchers.equalTo(1))
 		.body("data.job_number", Matchers.startsWith("JOB_"));
-
 	}
 }

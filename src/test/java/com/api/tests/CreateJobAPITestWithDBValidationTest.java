@@ -1,8 +1,6 @@
 package com.api.tests;
 
-import static com.api.utils.SpecUtil.requestSpecificationWithAuth;
 import static com.api.utils.SpecUtil.responseSpec_OK;
-import static io.restassured.RestAssured.given;
 import static io.restassured.module.jsv.JsonSchemaValidator.matchesJsonSchemaInClasspath;
 
 import java.util.ArrayList;
@@ -26,6 +24,7 @@ import com.api.request.model.Customer;
 import com.api.request.model.CustomerAddress;
 import com.api.request.model.CustomerProduct;
 import com.api.request.model.Problems;
+import com.api.services.JobService;
 import com.api.utils.DateTimeUtil;
 import com.database.dao.CustomerAddressDao;
 import com.database.dao.CustomerDao;
@@ -47,8 +46,12 @@ public class CreateJobAPITestWithDBValidationTest {
 	private CustomerAddress customerAddress;
 	private CustomerProduct customerProduct;
 	Problems problems;
+	private JobService jobService;
+	
 	@BeforeMethod(description = "Creating createjob API request payload")
 	public void setup() {
+		
+		jobService = new JobService();
 		customer = new Customer("tushar", "shelar", "9321075789", "", "tds@gmail.com", "");
 		customerAddress = new CustomerAddress("A 201", "Alliance", "Karve Nager", "Phoenix", "Pune", "401101", "India", "Maharashtra");
 		customerProduct = new CustomerProduct(DateTimeUtil.getTimeWithDaysAgo(10), "75118284083258", "75118284083258", "75118284083258", DateTimeUtil.getTimeWithDaysAgo(10), Product.NEXUS_2.getCode(), Model.NEXUS_2_BLUE.getCode());
@@ -64,10 +67,7 @@ public class CreateJobAPITestWithDBValidationTest {
 	@Test(description = "Verify if create job API is able to create Inwarranty job", groups= {"api","smoke","regression"})
 	public void createJobAPITest() {
 						
-		Response response = given()
-		.spec(requestSpecificationWithAuth(Role.FD, createJobPayload))
-		.when()
-		.post("/job/create")
+		Response response = jobService.create(Role.FD, createJobPayload)
 		.then()
 		.spec(responseSpec_OK())
 		.body(matchesJsonSchemaInClasspath("response-schema\\CreateJobAPIResponseSchema.json"))
