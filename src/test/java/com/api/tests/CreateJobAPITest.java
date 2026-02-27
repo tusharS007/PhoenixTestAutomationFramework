@@ -37,7 +37,7 @@ public class CreateJobAPITest {
 		jobService = new JobService();
 		Customer customer = new Customer("tushar", "shelar", "9321075789", "", "tds@gmail.com", "");
 		CustomerAddress customerAddress = new CustomerAddress("A 201", "Alliance", "Karve Nager", "Phoenix", "Pune", "401101", "India", "Maharashtra");
-		CustomerProduct customerProduct = new CustomerProduct(DateTimeUtil.getTimeWithDaysAgo(10), "87988284085858", "87988284085858", "87988284085858", DateTimeUtil.getTimeWithDaysAgo(10), Product.NEXUS_2.getCode(), Model.NEXUS_2_BLUE.getCode());
+		CustomerProduct customerProduct = new CustomerProduct(DateTimeUtil.getTimeWithDaysAgo(10), "99988284085858", "99988284085858", "99988284085858", DateTimeUtil.getTimeWithDaysAgo(10), Product.NEXUS_2.getCode(), Model.NEXUS_2_BLUE.getCode());
 		Problems problems = new Problems(Problem.OVERHEATONG.getCode(), "Display Issue");
 		
 		List<Problems> problemsList = new ArrayList<Problems>();

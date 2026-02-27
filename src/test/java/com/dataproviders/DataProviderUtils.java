@@ -48,10 +48,10 @@ public class DataProviderUtils {
 
 	@DataProvider(name = "CreateJobAPIFakerDataProvider", parallel = true)
 	public static Iterator<CreateJobPayload> CreateJobAPIFakerDataProvider() {
-		String fakerCount = System.getProperty("fakerCount","5");
+		String fakerCount = System.getProperty("fakerCount", "5");
 		int fakeCountInt = Integer.parseInt(fakerCount);
 		Iterator<CreateJobPayload> payloadIterator = FakerDataFGenerator.generateFakeCreateJobData(fakeCountInt);
-  
+
 		return payloadIterator;
 	}
 
@@ -60,22 +60,23 @@ public class DataProviderUtils {
 		return JsonReaderUtil.loadJson("testData/loginAPITestData.json", UserCredetials[].class);
 
 	}
-	
+
 	@DataProvider(name = "CreateJobAPIJsonDataProvider", parallel = true)
 	public static Iterator<CreateJobPayload> CreateJobAPIJsonDataProvider() {
 		return JsonReaderUtil.loadJson("testData/CreateJobAPIData.json", CreateJobPayload[].class);
 
 	}
-	
+
 	@DataProvider(name = "LoginAPIExcelDataProvider", parallel = true)
 	public static Iterator<UserBean> LoginAPIExcelDataProvider() {
-		return ExcelReaderUtil.loadTestData("LoginTestData", UserBean.class);
+		return ExcelReaderUtil.loadTestData("testData/PhoenixTestData.xlsx", "LoginTestData", UserBean.class);
 
 	}
-	
+
 	@DataProvider(name = "CreateJobAPIExcelDataProvider", parallel = true)
 	public static Iterator<CreateJobPayload> CreateJobAPIExcelDataProvider() {
-		Iterator<CreateJobBean> iterator = ExcelReaderUtil.loadTestData("CreateJobTestData", CreateJobBean.class);
+		Iterator<CreateJobBean> iterator = ExcelReaderUtil.loadTestData("testData/PhoenixTestData.xlsx",
+				"CreateJobTestData", CreateJobBean.class);
 
 		List<CreateJobPayload> payLoadList = new ArrayList<CreateJobPayload>();
 		CreateJobBean tempBean;
@@ -89,6 +90,7 @@ public class DataProviderUtils {
 
 		return payLoadList.iterator();
 	}
+
 	@DataProvider(name = "CreateJobAPIDBDataProvider", parallel = true)
 	public static Iterator<CreateJobPayload> CreateJobAPIDBDataProvider() {
 
@@ -99,7 +101,7 @@ public class DataProviderUtils {
 			CreateJobPayload payload = CreateJobBeanMapper.mapper(createJobBean);
 			payloadList.add(payload);
 		}
-		
+
 		return payloadList.iterator();
 	}
 }
