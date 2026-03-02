@@ -3,6 +3,7 @@ package com.api.tests;
 import java.io.IOException;
 
 import org.testng.annotations.BeforeMethod;
+import org.testng.annotations.Listeners;
 import org.testng.annotations.Test;
 
 import com.api.constant.Role;
@@ -11,6 +12,7 @@ import com.api.utils.SpecUtil;
 
 import io.restassured.module.jsv.JsonSchemaValidator;
 
+@Listeners(com.listeners.APITestListener.class)
 public class UserDetailsAPITest {
  
 	private UserDetailsService userDetailsService;

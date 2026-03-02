@@ -9,6 +9,7 @@ import java.util.List;
 import org.hamcrest.Matchers;
 import org.testng.Assert;
 import org.testng.annotations.BeforeMethod;
+import org.testng.annotations.Listeners;
 import org.testng.annotations.Test;
 
 import com.api.constant.Model;
@@ -39,6 +40,7 @@ import com.database.model.MapJobProblemModel;
 
 import io.restassured.response.Response;
 
+@Listeners(com.listeners.APITestListener.class)
 public class CreateJobAPITestWithDBValidationTest {
 
 	private CreateJobPayload createJobPayload;

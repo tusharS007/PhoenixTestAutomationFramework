@@ -5,6 +5,9 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.Properties;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 // To design this class we have used Singleton pattern
 public class ConfigManager {
 
@@ -12,6 +15,7 @@ public class ConfigManager {
 
 	// Create Object of property class
 	private static Properties prop = new Properties(); // created static object, only one memory allocation will happen
+	private static final Logger LOGGER = LogManager.getLogger(ConfigManager.class);
 
 	private static String path = "config/config.properties";
 	private static String env;
@@ -24,9 +28,13 @@ public class ConfigManager {
 	// static block executed only once so that program can be memory efficient
 	static {
 
+		LOGGER.info("Reading env value passed from terminal");
+		if(System.getProperty("env")==null) {
+			LOGGER.warn("Env variable is not set...using qa as the env");
+		}
 		// if we forget to pass env value in cmd/git by default it will take 'qa' env
 		env = System.getProperty("env", "qa");
-		System.out.println("Running the test in Env - " + env);
+		LOGGER.info("Running the test in env {}", env);
 		env = env.toLowerCase().trim();
 
 		// Using Java 14+ enhanced switch statement (arrow syntax '->') to reduce
@@ -43,6 +51,7 @@ public class ConfigManager {
 		default -> path = "config/config.qa.properties";
 		}
 
+		LOGGER.info("Using the properties file from the path {}", path);
 		// Operation of loading the properties file in the memory
 		// static block it will executed once during class loading time
 		// we are ensuring object created only once so that code become memory efficient
@@ -51,14 +60,17 @@ public class ConfigManager {
 		InputStream input = Thread.currentThread().getContextClassLoader().getResourceAsStream(path);
 
 		if (input == null) {
+			LOGGER.error("Cannot find the file at the path {}",path);
 			throw new RuntimeException("Cannot find the file at the path: " + path);
 		}
 
 		try {
 			prop.load(input);
 		} catch (FileNotFoundException e) {
+			LOGGER.error("Cannot find the file in the path {}",path,e);
 			e.printStackTrace();
 		} catch (IOException e) {
+			LOGGER.error("Something went wrong...please check the file {}",path,e);
 			e.printStackTrace();
 		}
 
