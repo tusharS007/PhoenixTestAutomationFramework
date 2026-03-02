@@ -6,6 +6,7 @@ import static io.restassured.module.jsv.JsonSchemaValidator.matchesJsonSchemaInC
 import org.hamcrest.Matchers;
 import org.testng.Assert;
 import org.testng.annotations.BeforeMethod;
+import org.testng.annotations.Listeners;
 import org.testng.annotations.Test;
 
 import com.api.constant.Role;
@@ -20,6 +21,7 @@ import com.database.model.CustomerAddressDBModel;
 import com.database.model.CustomerDBModel;
 import com.database.model.JobHeadModel;
 
+@Listeners(com.listeners.APITestListener.class)
 public class CreateJobAPITestWithFakeData {
 
 	private CreateJobPayload createJobPayload;
