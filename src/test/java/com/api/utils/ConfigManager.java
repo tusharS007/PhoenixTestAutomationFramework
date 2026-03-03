@@ -18,7 +18,7 @@ public class ConfigManager {
 	private static final Logger LOGGER = LogManager.getLogger(ConfigManager.class);
 
 	private static String path = "config/config.properties";
-	private static String env;
+	public static String env;
 
 	private ConfigManager() {
 		// to apply restriction we created private constructor so no object will be
