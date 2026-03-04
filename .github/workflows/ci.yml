@@ -49,6 +49,17 @@ jobs:
              mvn clean test \
              -DsuiteXmlFile=${{ github.event.inputs.suiteXmlFile || 'testng.xml' }} \
              -Denv=${{ github.event.inputs.env || 'qa' }}
+
+    - name: Generating Allure Report
+      if: always()
+      run: mvn allure:report
+
+    - name: Creating github page branch
+      if: always()
+      uses: peaceiris/action-gh-pages@v4.0.0
+      with:
+           github_token: ${{ secrets.GITHUB_TOKEN }}
+           publish_dir: target/site/allure-maven-plugin
       
     - name: Upload a Build Artifact
       if: always()
