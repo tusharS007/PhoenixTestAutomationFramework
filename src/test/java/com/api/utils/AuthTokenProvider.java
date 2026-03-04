@@ -16,7 +16,7 @@ import org.apache.logging.log4j.Logger;
 import com.api.constant.Role;
 import com.api.request.model.UserCredetials;
 
-
+import io.qameta.allure.Step;
 import io.restassured.http.ContentType;
 
 public class AuthTokenProvider {
@@ -29,6 +29,7 @@ public class AuthTokenProvider {
 		//To restrict object creation outside of the claas we created private constructor.
 	}
 
+	@Step("Getting the Auth token for the Role")
 	public static String getToken(Role role) {
 		
 		LOGGER.info("Checking if the token for {} is present in the cache", role);
