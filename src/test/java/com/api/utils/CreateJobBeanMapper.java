@@ -13,6 +13,8 @@ import com.api.request.model.CustomerProduct;
 import com.api.request.model.Problems;
 import com.dataproviders.api.bean.CreateJobBean;
 
+import io.qameta.allure.Step;
+
 public class CreateJobBeanMapper {
 
 	//We will giving the bean and it will create the payload for CreateJobAPI
@@ -22,6 +24,7 @@ public class CreateJobBeanMapper {
 		
 	}
 	
+	@Step("Converting the Create Job Bean to the Create Job Payload for CreateJob Test")
 	public static CreateJobPayload mapper(CreateJobBean bean) {
 		//Bean ------> CreateJobPayLoad Object
 		

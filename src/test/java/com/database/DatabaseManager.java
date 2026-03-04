@@ -12,6 +12,8 @@ import com.api.utils.VaultDBConfig;
 import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
 
+import io.qameta.allure.Step;
+
 public class DatabaseManager {
 	private static final Logger LOGGER = LogManager.getLogger(DatabaseManager.class);
 	
@@ -37,6 +39,7 @@ public class DatabaseManager {
 
 	}
 	
+	@Step("Loading Database Secrets")
 	public static String loadSecret(String key) {
 
 		String value = null;
@@ -60,6 +63,7 @@ public class DatabaseManager {
 
 	// synchronized - keyword used to make it thread safe means at time only one
 	// thread can access it so there will not be any issue in parallel execution.
+	@Step("Initializing the database pool")
 	private static void initializePool() {
 		if (hikariDataSource == null) {
 			
@@ -87,6 +91,7 @@ public class DatabaseManager {
 		}
 	}
 
+	@Step("Getting the Database Connection")
 	public static Connection getConnection() throws SQLException {
 		if (hikariDataSource == null) {
 			LOGGER.info("Initializing the Database connection using HikariCP");

@@ -11,6 +11,8 @@ import org.apache.logging.log4j.Logger;
 import com.database.DatabaseManager;
 import com.database.model.MapJobProblemModel;
 
+import io.qameta.allure.Step;
+
 public class MapJobProblemDao {
 	
 	private static final Logger LOGGER = LogManager.getLogger(CustomerDao.class);
@@ -23,6 +25,7 @@ public class MapJobProblemDao {
 		
 	}
 
+	@Step("Retriving the Problems details Data from Database")
 	public static MapJobProblemModel getProblemDetails(int tr_job_head_id) {
 		
 		MapJobProblemModel mapJobProblemModel= null;

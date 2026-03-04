@@ -8,6 +8,8 @@ import java.util.Properties;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import io.qameta.allure.Step;
+
 // To design this class we have used Singleton pattern
 public class ConfigManager {
 
@@ -18,7 +20,7 @@ public class ConfigManager {
 	private static final Logger LOGGER = LogManager.getLogger(ConfigManager.class);
 
 	private static String path = "config/config.properties";
-	private static String env;
+	public static String env;
 
 	private ConfigManager() {
 		// to apply restriction we created private constructor so no object will be
@@ -76,6 +78,7 @@ public class ConfigManager {
 
 	}
 
+	@Step("Getting Property Value from the config file")
 	public static String getProperty(String key) {
 
 		return prop.getProperty(key.trim());

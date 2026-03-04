@@ -8,6 +8,7 @@ import org.apache.logging.log4j.Logger;
 
 import com.api.constant.Role;
 
+import io.qameta.allure.Step;
 import io.restassured.response.Response;
 
 public class JobService {
@@ -17,6 +18,7 @@ public class JobService {
 	private static final String SEARCH_ENDPOINT = "/job/search";
 	private static final Logger LOGGER = LogManager.getLogger(JobService.class);
 
+	@Step("Creating Inwarranty Job with Create Job API")
 	public Response create(Role role, Object payLoad) {
 		LOGGER.info("Making request to the {} for the role {} and payload{}",CREATE_JOB_ENDPOINT,role, payLoad );
 		
@@ -26,6 +28,7 @@ public class JobService {
 	    .post(CREATE_JOB_ENDPOINT);
 	}
 	
+	@Step("Making Search API Request")
 	public Response search(Role role, Object payLoad) {
 		LOGGER.info("Making request to the {} for the role {} and payload{}",SEARCH_ENDPOINT,role, payLoad );
 		

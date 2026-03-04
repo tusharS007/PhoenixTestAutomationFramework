@@ -8,6 +8,7 @@ import org.apache.logging.log4j.Logger;
 import com.api.constant.Role;
 import com.api.utils.SpecUtil;
 
+import io.qameta.allure.Step;
 import io.restassured.response.Response;
 
 public class UserDetailsService {
@@ -15,6 +16,7 @@ public class UserDetailsService {
 	private static final String USERDETAILS_ENDPOINT = "userdetails";
 	private static final Logger LOGGER = LogManager.getLogger(UserDetailsService.class);
 
+	@Step("Making UserDetails API Request for the role")
 	public Response userDetails(Role role) {
 		LOGGER.info("Making request to the {} for the role {} ", USERDETAILS_ENDPOINT, role);
 

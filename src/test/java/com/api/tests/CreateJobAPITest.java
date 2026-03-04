@@ -27,7 +27,16 @@ import com.api.request.model.Problems;
 import com.api.services.JobService;
 import com.api.utils.DateTimeUtil;
 
+import io.qameta.allure.Description;
+import io.qameta.allure.Epic;
+import io.qameta.allure.Feature;
+import io.qameta.allure.Severity;
+import io.qameta.allure.SeverityLevel;
+import io.qameta.allure.Story;
+
 @Listeners(com.listeners.APITestListener.class)
+@Epic("Job Management")
+@Feature("Job Creation")
 public class CreateJobAPITest {
 
 	private CreateJobPayload createJobPayload;
@@ -39,7 +48,7 @@ public class CreateJobAPITest {
 		jobService = new JobService();
 		Customer customer = new Customer("tushar", "shelar", "9321075789", "", "tds@gmail.com", "");
 		CustomerAddress customerAddress = new CustomerAddress("A 201", "Alliance", "Karve Nager", "Phoenix", "Pune", "401101", "India", "Maharashtra");
-		CustomerProduct customerProduct = new CustomerProduct(DateTimeUtil.getTimeWithDaysAgo(10), "99988284085858", "99988284085858", "99988284085858", DateTimeUtil.getTimeWithDaysAgo(10), Product.NEXUS_2.getCode(), Model.NEXUS_2_BLUE.getCode());
+		CustomerProduct customerProduct = new CustomerProduct(DateTimeUtil.getTimeWithDaysAgo(10), "92388284085858", "92388284085858", "92388284085858", DateTimeUtil.getTimeWithDaysAgo(10), Product.NEXUS_2.getCode(), Model.NEXUS_2_BLUE.getCode());
 		Problems problems = new Problems(Problem.OVERHEATONG.getCode(), "Display Issue");
 		
 		List<Problems> problemsList = new ArrayList<Problems>();
@@ -47,7 +56,10 @@ public class CreateJobAPITest {
 		createJobPayload = new CreateJobPayload(ServiceLocation.SERVICE_LOCATION_A.getCode(), Platform.FRONT_DESK.getCode(), Warranty_Status.IN_WARRANTY.getCode(), OEM.GOOGLE.getCode(), customer, customerAddress, customerProduct, problemsList);
 	}
 	
-	@Test(description = "Verify if create job API is able to create Inwarranty job", groups= {"api","smoke","regression"})
+	@Story("FD should be able to create Job")
+	@Description("Verify if FD able to use create job api and Inwarranty job is created")
+	@Severity(SeverityLevel.BLOCKER)
+	@Test(description = "Verify if FD able to use create job api and Inwarranty job is created", groups= {"api","smoke","regression"})
 	public void createJobAPITest() {
 						
 		jobService.create(Role.FD, createJobPayload)
