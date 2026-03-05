@@ -58,9 +58,9 @@ public class CreateJobAPITestWithDBValidationWithResponseModelTest {
 		problemsList.add(problems);
 		createJobPayload = new CreateJobPayload(ServiceLocation.SERVICE_LOCATION_A.getCode(), Platform.FRONT_DESK.getCode(), Warranty_Status.IN_WARRANTY.getCode(), OEM.GOOGLE.getCode(), customer, customerAddress, customerProduct, problemsList);
 	}
-	
+
 	@Test(description = "Verify if create job API is able to create Inwarranty job", groups = { "api", "smoke",
-			"regression" })
+			"regression" }, retryAnalyzer = com.api.retry.RetryAnalyzer.class)
 	public void createJobAPITest() {
 
 		CreateJobResponseModel createJobDataModel = jobService.create(Role.FD, createJobPayload)

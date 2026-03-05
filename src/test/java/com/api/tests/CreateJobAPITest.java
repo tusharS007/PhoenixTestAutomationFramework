@@ -59,7 +59,8 @@ public class CreateJobAPITest {
 	@Story("FD should be able to create Job")
 	@Description("Verify if FD able to use create job api and Inwarranty job is created")
 	@Severity(SeverityLevel.BLOCKER)
-	@Test(description = "Verify if FD able to use create job api and Inwarranty job is created", groups= {"api","smoke","regression"})
+	@Test(description = "Verify if FD able to use create job api and Inwarranty job is created", groups = { "api",
+			"smoke", "regression" }, retryAnalyzer = com.api.retry.RetryAnalyzer.class)
 	public void createJobAPITest() {
 						
 		jobService.create(Role.FD, createJobPayload)

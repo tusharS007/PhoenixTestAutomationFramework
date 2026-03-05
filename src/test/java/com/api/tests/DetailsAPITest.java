@@ -34,7 +34,8 @@ public class DetailsAPITest {
 	@Story("Job details shown correctly")
 	@Description("Verify if FD user is able to login via API")
 	@Severity(SeverityLevel.CRITICAL)
-	@Test(description = "Verify if Detail API is working properly", groups = { "api", "smoke", "e2e" })
+	@Test(description = "Verify if Detail API is working properly", groups = { "api", "smoke",
+			"e2e" }, retryAnalyzer = com.api.retry.RetryAnalyzer.class)
 	public void detailAPITest() {
 
 		dashboardService.details(Role.FD, detailPayload)
