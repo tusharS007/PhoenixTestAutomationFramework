@@ -29,16 +29,17 @@ import io.qameta.allure.Story;
 public class MasterAPITest {
 	
 	MasterService masterService;
-	
-	@BeforeMethod(description="Instantiating the Master Service Object")
+
+	@BeforeMethod(description = "Instantiating the Master Service Object")
 	public void setup() {
 		masterService = new MasterService();
 	}
-	
+
 	@Story("Master API should bring OEM details, Problem type, Warranty status")
 	@Description("Verify if FD user is able to login via API")
 	@Severity(SeverityLevel.BLOCKER)
-	@Test(description = "Verify if master API response is shown correctly", groups= {"api","smoke","regression"})
+	@Test(description = "Verify if master API response is shown correctly", groups = { "api", "smoke",
+			"regression" }, retryAnalyzer = com.api.retry.RetryAnalyzer.class)
 	public void masterAPITest() {
 		
 		masterService.master(Role.FD)// whenerver we make post request default content-type application/url- form encoded 

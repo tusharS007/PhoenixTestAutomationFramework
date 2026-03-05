@@ -40,9 +40,10 @@ public class CountAPITest {
 	@Story("Job count shown correctly")
 	@Description("Verify if FD user is able to login via API")
 	@Severity(SeverityLevel.CRITICAL)
-	@Test(description = "Verify if count API response is shown correctly", groups= {"api","smoke","regression"})
+	@Test(description = "Verify if count API response is shown correctly", groups = { "api", "smoke",
+			"regression" }, retryAnalyzer = com.api.retry.RetryAnalyzer.class)
 	public void verifyCountAPIResponse() {
-		
+	
 		dashboardService.count(Role.FD)
 		.then()
 		.spec(responseSpec_OK())

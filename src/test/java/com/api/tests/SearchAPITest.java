@@ -24,7 +24,8 @@ public class SearchAPITest {
 		searchPayload = new Search(JOB_NUMBER);
 	}
 
-	@Test(description = "Verify if Search API is working properly", groups = { "api", "smoke", "e2e" })
+	@Test(description = "Verify if Search API is working properly", groups = { "api", "smoke",
+			"e2e" }, retryAnalyzer = com.api.retry.RetryAnalyzer.class)
 	public void searchAPITest() {
 
 		jobService.search(Role.FD, searchPayload)

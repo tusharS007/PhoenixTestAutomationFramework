@@ -24,18 +24,19 @@ import io.restassured.module.jsv.JsonSchemaValidator;
 public class UserDetailsAPITest {
  
 	private UserDetailsService userDetailsService;
-	
-	@BeforeMethod(description="Setting up the UserDetailsService Instance")
-	public void setup(){
+
+	@BeforeMethod(description = "Setting up the UserDetailsService Instance")
+	public void setup() {
 		userDetailsService = new UserDetailsService();
 	}
-	
+
 	@Story("User Details should be shown")
 	@Description("Verify if FD user is able to login via API")
 	@Severity(SeverityLevel.CRITICAL)
-	@Test(description = "Verify if userdetails API response is shown correctly", groups= {"api","smoke","regression"})
+	@Test(description = "Verify if userdetails API response is shown correctly", groups = { "api", "smoke",
+			"regression" }, retryAnalyzer = com.api.retry.RetryAnalyzer.class)
 	public void userDetailsAPITest() throws IOException {
-			
+
 		userDetailsService.userDetails(Role.FD)
 		  .then()
 		  .spec(SpecUtil.responseSpec_OK())

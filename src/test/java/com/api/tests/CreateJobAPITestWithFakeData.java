@@ -25,17 +25,19 @@ import com.database.model.JobHeadModel;
 public class CreateJobAPITestWithFakeData {
 
 	private CreateJobPayload createJobPayload;
-	private final static int count =1;
+	private final static int count = 1;
 	private JobService jobService;
+
 	@BeforeMethod(description = "Creating createjob API request payload")
 	public void setup() {
-	    createJobPayload = FakerDataFGenerator.generateFakeCreateJobData();
-	    jobService = new JobService();
+		createJobPayload = FakerDataFGenerator.generateFakeCreateJobData();
+		jobService = new JobService();
 	}
-	
-	@Test(description = "Verify if create job API is able to create Inwarranty job", groups= {"api","smoke","regression"},invocationCount = count)
+
+	@Test(description = "Verify if create job API is able to create Inwarranty job", groups = { "api", "smoke",
+			"regression" }, invocationCount = count, retryAnalyzer = com.api.retry.RetryAnalyzer.class)
 	public void createJobAPITest() {
-						
+
 		int customerId = jobService.create(Role.FD, createJobPayload)
 		.then()
 		.spec(responseSpec_OK())
