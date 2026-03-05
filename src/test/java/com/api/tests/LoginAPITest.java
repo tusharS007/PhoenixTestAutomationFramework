@@ -33,12 +33,14 @@ public class LoginAPITest {
 		userCredentials = new UserBean("iamfd","password");
 		authService = new AuthService();
 	}
+
 	@Story("Valid User should be able to login into the System")
 	@Description("Verify if FD user is able to login via API")
 	@Severity(SeverityLevel.BLOCKER)
-	@Test(description = "Verify if login API is working for FD user", groups= {"api","regression","smoke"})
+	@Test(description = "Verify if login API is working for FD user", groups = { "api", "regression",
+			"smoke" }, retryAnalyzer = com.api.retry.RetryAnalyzer.class)
 	public void loginAPITest() throws IOException {
-		
+
 		authService.login(userCredentials)		
 		.then()
 		.spec(responseSpec_OK())
